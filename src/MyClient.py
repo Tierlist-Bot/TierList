@@ -7,8 +7,6 @@ from src.show import Show
 
 class MyClient(discord.Client, Commande, Help, Show):
     def __init__(self, default_intents):
-        global prefix
-        prefix = "tl?"
         discord.Client.__init__(self, intents=default_intents)
         Help.__init__(self)
 
