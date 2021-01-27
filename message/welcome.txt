@@ -1,0 +1,9 @@
+Hello Thank you for inviting me
+
+
+You can list command with tl?help and
+you can change the prefix with "prefix" prefix "new prefix"
+
+
+For bug report and new proposal all happens here:
+https://discord.gg/raWtCd62xc
