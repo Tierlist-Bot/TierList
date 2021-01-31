@@ -97,6 +97,17 @@ class Help:
                                              "prefix for your server"))
 
     async def helpTraitment(self, message, prefix):
+        """
+        send help message
+
+        Parameters:
+            Help : self
+            discrod.Message : message
+            str : prefix
+
+        Retrun:
+            void
+        """
         if message.content == prefix + "help":
             await message.channel.send(embed=self.basicHelp)
         elif message.content == prefix + "help list":

@@ -72,6 +72,8 @@ class MyClient(discord.Client, Commande, Help, Show):
                                  color=0x00ff00,
                                  timestamp=date)
         await channel.send(embed=embedVar)
+        await self.change_presence(activity=discord.Game(
+            name="tl?help for doc"))
 
     async def on_guild_join(self, guild):
         """

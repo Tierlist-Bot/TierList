@@ -6,6 +6,17 @@ import src.folder
 
 class Show(src.folder.FileFunction):
     def catDraw(self, data, key, color):
+        """
+        retrun  image of category
+
+        Paramters:
+            data : dict
+            key : str
+            color : tuple
+
+        Retrun:
+            out : PIL.Image
+        """
         taille = len(data[key])
         x = 880
         y = 80 * (taille // 10 + 1)
@@ -50,6 +61,15 @@ class Show(src.folder.FileFunction):
         return out
 
     def tlDraw(self, dic):
+        """
+        return image of Tierlist
+
+        Paramters:
+            dic: dict
+
+        Retrun:
+            out: PIL.Image
+        """
         x = 880
         y = 0
         for key in dic:
@@ -72,6 +92,16 @@ class Show(src.folder.FileFunction):
         return out
 
     async def showTrait(self, message, prefix):
+        """
+        Show an image according to the message in paramter
+
+        Parameters:
+            message: discrod.message
+            prefix: str
+
+        Retrun:
+            void
+        """
         commande = message.content.split(" ")
         data = self.load("tierList/{}.json".format(message.guild.id))
         if message.content.startswith(prefix + "show tierlist"):
