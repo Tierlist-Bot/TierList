@@ -1,4 +1,4 @@
-#!/usr/bin/python3.9
+#!/usr/bin/python3
 import discord
 from src.MyClient import MyClient
 import os

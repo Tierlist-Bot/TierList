@@ -1,5 +1,6 @@
 import datetime
 import discord
+import dbl
 from src.command import Commande
 from src.help import Help
 from src.show import Show
@@ -8,7 +9,11 @@ from src.show import Show
 class MyClient(discord.Client, Commande, Help, Show):
     def __init__(self, default_intents, topgg_token):
         discord.Client.__init__(self, intents=default_intents)
+        self.dblpy = dbl.DBLClient(self, topgg_token)
         Help.__init__(self)
+
+    async def on_guild_post(self):
+        print("Server count posted successfully")
 
     async def on_member_join(self, member):
         """
@@ -25,8 +30,7 @@ class MyClient(discord.Client, Commande, Help, Show):
             welcome = member.guild.get_channel(799371570933923880)
             rules = member.guild.get_channel(799666237801758741)
             message = "{}\n Welcome in Tierlist suport server check {}".format(
-                member.mention,
-                rules.mention)
+                member.mention, rules.mention)
             role = member.guild.get_role(802607681629716550)
             await member.add_roles(role)
             await welcome.send(message)
@@ -74,6 +78,7 @@ class MyClient(discord.Client, Commande, Help, Show):
         await channel.send(embed=embedVar)
         await self.change_presence(activity=discord.Game(
             name="tl?help for doc"))
+        await self.dblpy.post_guild_count(len(self.guilds))
 
     async def on_guild_join(self, guild):
         """
@@ -104,6 +109,7 @@ class MyClient(discord.Client, Commande, Help, Show):
         f = open("message/welcome.txt", "r")
         lignes = f.readlines()
         message = "".join(lignes)
+        await self.dblpy.post_guild_count(len(self.guilds))
         try:
             await guild.system_channel.send(message)
         except Exception:
@@ -135,6 +141,7 @@ class MyClient(discord.Client, Commande, Help, Show):
         data = self.load("src/prefix.json")
         del data[str(guild.id)]
         self.save("src/prefix.json", data)
+        await self.dblpy.post_guild_count(len(self.guilds))
 
     async def on_message(self, message):
         """
@@ -151,13 +158,11 @@ class MyClient(discord.Client, Commande, Help, Show):
             return
 
         prefixs = self.load("src/prefix.json")
-        if message.content.startswith(
-                prefixs[str(message.guild.id)] + "help"):
+        if message.content.startswith(prefixs[str(message.guild.id)] + "help"):
             await self.helpTraitment(message, prefixs[str(message.guild.id)])
-        elif message.content.startswith(
-                prefixs[str(message.guild.id)] + "show"):
+        elif message.content.startswith(prefixs[str(message.guild.id)] +
+                                        "show"):
             await self.showTrait(message, prefixs[str(message.guild.id)])
-        elif message.content.startswith(
-                prefixs[str(message.guild.id)]):
+        elif message.content.startswith(prefixs[str(message.guild.id)]):
             reponse = self.traitment(message, prefixs[str(message.guild.id)])
             await message.channel.send(reponse)
