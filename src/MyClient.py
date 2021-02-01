@@ -109,11 +109,11 @@ class MyClient(discord.Client, Commande, Help, Show):
         f = open("message/welcome.txt", "r")
         lignes = f.readlines()
         message = "".join(lignes)
-        await self.dblpy.post_guild_count(len(self.guilds))
         try:
             await guild.system_channel.send(message)
         except Exception:
             pass
+        await self.dblpy.post_guild_count(len(self.guilds))
 
     async def on_guild_remove(self, guild):
         """
